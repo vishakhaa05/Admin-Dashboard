@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
@@ -17,15 +17,21 @@ const RevenueChart = () => {
 
   return (
     <motion.div
-      className='bg-gray-800 bg-opacity-50 backdrop-filter backdrop-blur-lg shadow-lg rounded-xl p-6 border border-gray-700 mb-8'
-      initial={{ opacity: 0, y: 20 }}
+      className="bg-white rounded-2xl p-5 sm:p-6 border border-slate-200/80 shadow-xs hover:shadow-md transition-all duration-200"
+      initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 0.2 }}
     >
-      <div className='flex justify-between items-center mb-6'>
-        <h2 className='text-xl font-semibold text-gray-100'>Revenue vs Target</h2>
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-6">
+        <div>
+          <h2 className="text-base sm:text-lg font-bold text-slate-800">
+            Revenue vs Target
+          </h2>
+          <p className="text-xs text-slate-400">Actual performance comparison against milestones</p>
+        </div>
+
         <select
-          className='bg-gray-700 text-white rounded-md px-3 py-1 focus:outline-none focus:ring-2 focus:ring-blue-500'
+          className="bg-slate-50 border border-slate-200 text-slate-700 text-xs font-semibold rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition-all cursor-pointer w-fit"
           value={selectedTimeRange}
           onChange={(e) => setSelectedTimeRange(e.target.value)}
         >
@@ -36,23 +42,60 @@ const RevenueChart = () => {
         </select>
       </div>
 
-      <div style={{ width: "100%", height: 400 }}>
-        <ResponsiveContainer>
-          <AreaChart data={revenueData}>
-            <CartesianGrid strokeDasharray='3 3' stroke='#374151' />
-            <XAxis dataKey='month' stroke='#9CA3AF' />
-            <YAxis stroke='#9CA3AF' />
+      <div className="h-72 sm:h-96 w-full">
+        <ResponsiveContainer width="100%" height="100%">
+          <AreaChart data={revenueData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+            <defs>
+              <linearGradient id="revenueGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#4F46E5" stopOpacity={0.3} />
+                <stop offset="95%" stopColor="#4F46E5" stopOpacity={0.0} />
+              </linearGradient>
+              <linearGradient id="targetGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="5%" stopColor="#10B981" stopOpacity={0.25} />
+                <stop offset="95%" stopColor="#10B981" stopOpacity={0.0} />
+              </linearGradient>
+            </defs>
+            <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" />
+            <XAxis dataKey="month" stroke="#94A3B8" fontSize={12} tickLine={false} />
+            <YAxis stroke="#94A3B8" fontSize={12} tickLine={false} />
             <Tooltip
-              contentStyle={{ backgroundColor: "rgba(31, 41, 55, 0.8)", borderColor: "#4B5563" }}
-              itemStyle={{ color: "#E5E7EB" }}
+              contentStyle={{
+                backgroundColor: "#FFFFFF",
+                borderColor: "#E2E8F0",
+                borderRadius: "0.75rem",
+                boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.08)",
+                color: "#0F172A",
+              }}
+              formatter={(value) => [`$${value.toLocaleString()}`, ""]}
             />
-            <Legend />
-            <Area type='monotone' dataKey='revenue' stroke='#8B5CF6' fill='#8B5CF6' fillOpacity={0.3} />
-            <Area type='monotone' dataKey='target' stroke='#10B981' fill='#10B981' fillOpacity={0.3} />
+            <Legend
+              iconType="circle"
+              wrapperStyle={{ paddingTop: "12px", fontSize: "12px", color: "#64748B" }}
+            />
+            <Area
+              type="monotone"
+              dataKey="revenue"
+              name="Actual Revenue"
+              stroke="#4F46E5"
+              strokeWidth={3}
+              fillOpacity={1}
+              fill="url(#revenueGrad)"
+            />
+            <Area
+              type="monotone"
+              dataKey="target"
+              name="Target Revenue"
+              stroke="#10B981"
+              strokeWidth={2}
+              strokeDasharray="4 4"
+              fillOpacity={1}
+              fill="url(#targetGrad)"
+            />
           </AreaChart>
         </ResponsiveContainer>
       </div>
     </motion.div>
   );
 };
+
 export default RevenueChart;

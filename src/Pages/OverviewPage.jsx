@@ -1,57 +1,62 @@
-import { BarChart2, ShoppingBag, Users, Zap } from "lucide-react"
-import Header from "../Components/common/Header"
-// eslint-disable-next-line no-unused-vars
-import { motion } from "framer-motion"
-import StatCard from "../Components/common/StatCard"
-import SalesOverviewChart from "../Components/overview/SalesOverviewChart"
-import SalesChannelChart from "../Components/overview/SalesChannelChart"
+import React from "react";
+import { BarChart2, ShoppingBag, Users, Zap } from "lucide-react";
+import Header from "../Components/common/Header";
+import { motion } from "framer-motion";
+import StatCard from "../Components/common/StatCard";
+import SalesOverviewChart from "../Components/overview/SalesOverviewChart";
+import SalesChannelChart from "../Components/overview/SalesChannelChart";
 import CategoryDistributionChart from "../Components/overview/CategoryDistributionChart";
 
-
- 
 const OverviewPage = () => {
   return (
-    <div className="flex-1 overflow-auto relative z-10">
+    <div className="flex-1 overflow-auto relative z-10 bg-slate-50 min-h-screen">
       <Header title="Overview" />
 
-      <main className="max-w-7xl mx-auto py-6 px-4 lg:py-8 lg:px-8">
-        <motion.div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8 "
-          initial={{ opacity: 0, y:20}}
+      <main className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8 space-y-8">
+        {/* STATS CARDS */}
+        <motion.div
+          className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4"
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
+          transition={{ duration: 0.5 }}
         >
-          <StatCard 
-          name="Total sales" icon={Zap} value ="$12345" color="6366F1"
+          <StatCard
+            name="Total Sales"
+            icon={Zap}
+            value="$12,345"
+            color="#4F46E5"
           />
-          <StatCard 
-          name="New Users" icon={Users} value ="1234" color="8B5CF6"
+          <StatCard
+            name="New Users"
+            icon={Users}
+            value="1,234"
+            color="#8B5CF6"
           />
-          <StatCard 
-          name="Total Products" icon={ShoppingBag} value ="567" color="EC4899"
+          <StatCard
+            name="Total Products"
+            icon={ShoppingBag}
+            value="567"
+            color="#EC4899"
           />
-          <StatCard 
-          name="Conversion Rate" icon={BarChart2} value ="12.8%" color="10B981"
+          <StatCard
+            name="Conversion Rate"
+            icon={BarChart2}
+            value="12.8%"
+            color="#10B981"
           />
         </motion.div>
-        
-       <div className="flex gap-4">
-          <div className="flex-1">
-            <SalesOverviewChart />
-           </div>
-          <div className="flex-1">
-             <CategoryDistributionChart />
-          </div>
-          
-      </div>
-      
 
+        {/* CHARTS ROW 1 */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <SalesOverviewChart />
+          <CategoryDistributionChart />
+        </div>
+
+        {/* CHARTS ROW 2 */}
         <SalesChannelChart />
       </main>
-  
     </div>
-  )
-}
+  );
+};
 
-
-
-export default OverviewPage
+export default OverviewPage;
